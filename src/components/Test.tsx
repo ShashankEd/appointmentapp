@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-export type Props = {
+interface props {
   name: string;
   baseEnthusiasmLevel?: number;
-};
+}
 
-const TestHook: React.FC<Props> = ({
+const TestHook: React.FC<props> = ({
   name,
   baseEnthusiasmLevel = 0
 }) => {

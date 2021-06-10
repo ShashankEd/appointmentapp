@@ -1,69 +1,59 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+ import React, { useEffect } from 'react';
+ import {
+   SafeAreaView,
+   StyleSheet,
+   BackHandler,
+   Alert,
+ } from 'react-native';
+ import 'react-native-gesture-handler';
+ import {Provider} from 'react-redux';
+ import {PersistGate} from 'redux-persist/integration/react';
+ //@ts-ignore
+ import {get as _get} from 'lodash';
+ import {store, persistor} from './src/store/configureStore';
+ import { LogBox } from 'react-native';
+ LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+ LogBox.ignoreAllLogs();//Ignore all log notifications
+ 
+import HomeHook from './src/components/HomeHook';
+import BookedAppointmentDetails from './src/components/BookedAppointmentDetails';
+import BookAppointment from './src/components/BookAppointment';
+import SplashHook from './src/components/SplashHook';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-import TestHook from './src/components/Test'
-
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-          <TestHook/>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+const Stack = createStackNavigator();
+  function App() {
+    
+    useEffect(() => {
+    })
+    
+   return (
+     <Provider store={store}>
+       <PersistGate loading={null} persistor={persistor}>
+          <SafeAreaView style={styles.mainContainer}>
+           <NavigationContainer>
+            <Stack.Navigator initialRouteName='SplashHook'>
+              <Stack.Screen name="SplashHook" component={SplashHook} options={{header: ()=> null}}/>
+              <Stack.Screen name="HomeHook" component={HomeHook} options={{ title: '' ,header: ()=> null }}/>
+              <Stack.Screen name="BookAppointment" component={BookAppointment}  options={{header:  ()=> null}}/>
+              <Stack.Screen name="BookedAppointmentDetails" component={BookedAppointmentDetails} options={{ title: '' }}/>
+            </Stack.Navigator>
+           </NavigationContainer>
+           </SafeAreaView>
+       </PersistGate>
+     </Provider>
+   );
+ };
+ 
+ const styles = StyleSheet.create({
+   mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+   }
+ });
+ 
+ export default App;
+ 
