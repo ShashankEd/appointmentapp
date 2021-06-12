@@ -5,6 +5,7 @@
    StyleSheet,
    BackHandler,
    Alert,
+   Dimensions,
  } from 'react-native';
  import 'react-native-gesture-handler';
  import {Provider} from 'react-redux';
@@ -38,7 +39,7 @@ const Stack = createStackNavigator();
             <Stack.Navigator initialRouteName='SplashHook'>
               <Stack.Screen name="SplashHook" component={SplashHook} options={{header: ()=> null}}/>
               <Stack.Screen name="HomeHook" component={HomeHook} options={{ title: '' ,header: ()=> null }}/>
-              <Stack.Screen name="BookAppointment" component={BookAppointment}  options={{header:  ()=> null}}/>
+              <Stack.Screen name="BookAppointment" component={BookAppointment}  options={{title: '' }}/>
               <Stack.Screen name="BookedAppointmentDetails" component={BookedAppointmentDetails} options={{ title: '' }}/>
             </Stack.Navigator>
            </NavigationContainer>

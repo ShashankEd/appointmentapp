@@ -17,6 +17,9 @@ interface props {
 const SplashHook: React.FC<props> = (props) =>{
     const [navigation, setNavigation] = useState(props.navigation);
     useEffect (() => {
+        setTimeout(() => {
+            navigation.navigate('HomeHook');
+        },2000)
     },[])
     return (
         <View style={{ flex: 1, padding: 24,backgroundColor:'yellow'}}>
