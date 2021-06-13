@@ -9,41 +9,65 @@ import {
     Dimensions,
     ScrollView
 } from 'react-native';
-
+import {
+    checkWhetherAppointmentBooked
+} from '../store/actions/action';
+import { useDispatch,useSelector,shallowEqual } from "react-redux";
+import { Dispatch } from "redux"
 const FONT_FAMILY = 'Verdana';
 interface props {
     navigation: {
         navigate: (routeName: string) => void;
     };
+    payload: {
+        flag: boolean,
+        bookingDetails: {
+            day: number,
+            time: number,
+            username: String,
+            email: String, 
+            phonenumber: String
+        }
+    };
+    checkWhetherAppointmentBooked: (payload:object) => any;
 }
 const BookAppointment: React.FC<props> = (props) => {
 
-    const { navigation } = props;
+    const {
+        navigation,
+        // checkWhetherAppointmentBooked,
+    } = props;
     const [day, setDay] = useState(0);
     const [time, setTime] = useState(0); // 10 12 2 4 6 
     const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [phonenumber, setPhoneNumber] = useState('');
+    const dispatch: Dispatch<any> = useDispatch()
+    const checkWhetherAppointmentBookedResponse = useSelector((state:props)=> state.checkWhetherAppointmentBooked,shallowEqual);
     //considering the standard appointment timings between 10 AM to 6 PM
     const get2HourTimings = () => {
         let i = 10;
         let output = [];
+        console.log(time)
         while (i <= 18) {
+            let counter = i;
             if (i < 12) {
                 output.push(
-                    <TouchableHighlight style={styles.timeTouchable} onPress={() => setTime(i)}>
+                    <TouchableHighlight style={ counter === time ? styles.timeTouchableSelected : styles.timeTouchable} key={counter} onPress={() => setTime(counter)}>
                         <Text style={styles.titleText}>{`${i} AM-${i + 2} PM`}</Text>
                     </TouchableHighlight>
                 )
             } else {
                 output.push(
-                    <TouchableHighlight style={styles.timeTouchable} onPress={() => setTime(i)}>
+                    <TouchableHighlight style={counter === time ? styles.timeTouchableSelected : styles.timeTouchable} key={counter} onPress={() => setTime(counter)}>
                         <Text style={styles.titleText}>{`${i > 12 ? i - 12 : i} PM-${(i + 2 - 12)} PM`}</Text>
                     </TouchableHighlight>
                 )
             }
             i = i + 2;
         }
+        console.log("output ", output);
+        
         return output;
     }
 
@@ -54,11 +78,36 @@ const BookAppointment: React.FC<props> = (props) => {
         }
         return result;
     }
-    //here store the user's selection in the redux store 
-
     const handleSubmit = () => {
-
+        dispatch(
+            checkWhetherAppointmentBooked({
+                flag:true,
+                bookingDetails: {
+                    day: day,
+                    time: time,
+                    username: username,
+                    email: email, 
+                    phonenumber: phonenumber
+                }
+            }));
+        const {navigation} = props;
+        navigation.navigate('BookedAppointmentDetails');
     }
+
+    useEffect(() => {
+    if(checkWhetherAppointmentBookedResponse?.flag) {
+        if(checkWhetherAppointmentBookedResponse?.flag) {
+            const {
+                day,time,username,email,phonenumber
+            } = checkWhetherAppointmentBookedResponse?.bookingDetails;
+            setDay(day);
+            setTime(time);
+            setUserName(username);
+            setEmail(email);
+            setPhoneNumber(phonenumber);
+        }
+    }
+    },[])
     return (
         <ScrollView style={styles.mainView}>
             <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: Dimensions.get('screen').width * 0.2 }}>
@@ -158,7 +207,7 @@ const styles = StyleSheet.create({
     },
     timeTouchableSelected: {
         backgroundColor: '#DDDDDD',
-        padding: 10,
+        padding: 12,
         width: Dimensions.get('screen').width * 0.3,
         alignItems: 'center',
         borderWidth: 1,
@@ -209,7 +258,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',
-        backgroundColor:'yellow'
+        backgroundColor:'yellow',
+        marginTop: Dimensions.get('screen').width * 0.05,
     },
     bookDisabled: {
         fontSize: 12,
@@ -221,7 +271,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',
-        backgroundColor:'grey'
+        backgroundColor:'grey',
+        marginTop: Dimensions.get('screen').width * 0.05,
     }
 });
 

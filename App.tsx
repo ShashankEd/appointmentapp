@@ -4,8 +4,6 @@
    SafeAreaView,
    StyleSheet,
    BackHandler,
-   Alert,
-   Dimensions,
  } from 'react-native';
  import 'react-native-gesture-handler';
  import {Provider} from 'react-redux';
