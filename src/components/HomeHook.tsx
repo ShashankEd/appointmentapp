@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     Dimensions,
     StyleSheet,
-    PixelRatio
+    PixelRatio,
+    BackHandler
 } from 'react-native';
 
 interface props {
@@ -20,7 +21,25 @@ interface props {
 const  HomeHook: React.FC<props> = (props) => {
 
     const {navigation} = props;
-    
+    //If user presses hardware back button more than once, then following method will show alert, and on clicking OK it will signout 
+    const backAction = () => {
+        Alert.alert("Hold on!", "Are you sure you want Exit the app?", [
+        {
+            text: "Cancel",
+            onPress: () => null,
+            style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+        ]);
+        return true;
+    };
+    useEffect(() => {
+        const backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          backAction
+        );
+         return () => backHandler.remove();
+    },[])
     return (
         <View style={styles.mainView}>
           <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('BookAppointment')}>
@@ -41,10 +60,10 @@ const styles = StyleSheet.create({
         alignItems:'center',paddingBottom:Dimensions.get('screen').width *0.2
     },
     titleText: {
-        fontSize:20, 
+        fontSize:Dimensions.get('screen').scale * 6, 
         fontWeight:'bold', 
         color:'black',
-        fontFamily: 'Times new roman'
+        fontFamily: 'Verdana'
     },
     touchable: {
         backgroundColor:'#DDDDDD',

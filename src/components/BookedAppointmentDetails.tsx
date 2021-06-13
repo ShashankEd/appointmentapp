@@ -5,29 +5,17 @@ import {
     StyleSheet,
     Dimensions,
 } from 'react-native';
-import { useDispatch,useSelector,shallowEqual } from "react-redux";
-import { Dispatch } from "redux"
+import {useSelector,shallowEqual } from "react-redux";
 const FONT_FAMILY = 'Verdana';
 interface props {
     navigation: {
         navigate: (routeName: string) => void;
-    };
-    payload: {
-        flag: boolean,
-        bookingDetails: {
-            day: number,
-            time: number,
-            username: String,
-            email: String, 
-            phonenumber: String
-        }
     };
     checkWhetherAppointmentBooked: (payload:object) => any;
 }
 const  BookedAppointmentDetails: React.FC<props> = (props) => {
     const {navigation} = props;
     const checkWhetherAppointmentBookedResponse = useSelector((state:props)=> state.checkWhetherAppointmentBooked,shallowEqual);
-    console.log("in details screen :::: ", checkWhetherAppointmentBookedResponse)
     const {
         day,time,username,email,phonenumber
     } = checkWhetherAppointmentBookedResponse?.bookingDetails;

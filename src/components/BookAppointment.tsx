@@ -3,7 +3,6 @@ import {
     View,
     Text,
     TextInput,
-    Button,
     StyleSheet,
     TouchableHighlight,
     Dimensions,
@@ -32,11 +31,6 @@ interface props {
     checkWhetherAppointmentBooked: (payload:object) => any;
 }
 const BookAppointment: React.FC<props> = (props) => {
-
-    const {
-        navigation,
-        // checkWhetherAppointmentBooked,
-    } = props;
     const [day, setDay] = useState(0);
     const [time, setTime] = useState(0); // 10 12 2 4 6 
     const [username, setUserName] = useState('');
@@ -48,7 +42,6 @@ const BookAppointment: React.FC<props> = (props) => {
     const get2HourTimings = () => {
         let i = 10;
         let output = [];
-        console.log(time)
         while (i <= 18) {
             let counter = i;
             if (i < 12) {
@@ -66,8 +59,6 @@ const BookAppointment: React.FC<props> = (props) => {
             }
             i = i + 2;
         }
-        console.log("output ", output);
-        
         return output;
     }
 
@@ -78,6 +69,7 @@ const BookAppointment: React.FC<props> = (props) => {
         }
         return result;
     }
+    
     const handleSubmit = () => {
         dispatch(
             checkWhetherAppointmentBooked({
@@ -85,9 +77,9 @@ const BookAppointment: React.FC<props> = (props) => {
                 bookingDetails: {
                     day: day,
                     time: time,
-                    username: username,
-                    email: email, 
-                    phonenumber: phonenumber
+                    username: username.trim(),
+                    email: email.trim(), 
+                    phonenumber: phonenumber.trim()
                 }
             }));
         const {navigation} = props;
@@ -111,7 +103,7 @@ const BookAppointment: React.FC<props> = (props) => {
     return (
         <ScrollView style={styles.mainView}>
             <View style={{ flexDirection: 'column', alignItems: 'center', paddingBottom: Dimensions.get('screen').width * 0.2 }}>
-                <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black' }}>Book an appointment</Text>
+                <Text style={{ fontSize: Dimensions.get('screen').scale * 6, fontWeight: 'bold', color: 'black',paddingTop: Dimensions.get('screen').width * 0.1  }}>Book an appointment</Text>
             </View>
             <View style={styles.bookForm}>
                 <View style={styles.day}>
@@ -156,7 +148,7 @@ const BookAppointment: React.FC<props> = (props) => {
                     style={keepBookDisabled() ?  styles.book : styles.bookDisabled}
                     disabled={keepBookDisabled() ? false : true} 
                     onPress={() => handleSubmit()}>
-                        <Text style={styles.titleText}>Book</Text>
+                        <Text style={styles.titleText}>{`${checkWhetherAppointmentBookedResponse?.flag ? 'Update' : 'Book'}`}</Text>
                 </TouchableHighlight>
             </View>
 
@@ -217,7 +209,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     titleText: {
-        fontSize: 12,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,
@@ -229,27 +221,27 @@ const styles = StyleSheet.create({
     username: {
         height: Dimensions.get('screen').width * 0.05,
         width: Dimensions.get('screen').width * 0.4,
-        fontSize: 14,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,
         marginBottom: Dimensions.get('screen').width * 0.05,
     },
     email: {
-        fontSize: 12,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,
         marginBottom: Dimensions.get('screen').width * 0.05,
     },
     phonenumber: {
-        fontSize: 14,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,
     },
     book: {
-        fontSize: 12,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,
@@ -258,11 +250,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         alignItems: 'center',
-        backgroundColor:'yellow',
+        backgroundColor:'#DDDDDD',
         marginTop: Dimensions.get('screen').width * 0.05,
     },
     bookDisabled: {
-        fontSize: 12,
+        fontSize: Dimensions.get('screen').scale * 4,
         fontWeight: 'bold',
         color: 'black',
         fontFamily: FONT_FAMILY,

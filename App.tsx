@@ -4,6 +4,7 @@
    SafeAreaView,
    StyleSheet,
    BackHandler,
+   Alert
  } from 'react-native';
  import 'react-native-gesture-handler';
  import {Provider} from 'react-redux';
@@ -26,8 +27,26 @@ import { NavigationContainer } from '@react-navigation/native';
 const Stack = createStackNavigator();
   function App() {
     
+  //If user presses hardware back button more than once, then following method will show alert, and on clicking OK it will signout 
+  const backAction = () => {
+    Alert.alert("Hold on!", "Are you sure you want Exit the app?", [
+      {
+        text: "Cancel",
+        onPress: () => null,
+        style: "cancel"
+      },
+      { text: "YES", onPress: () => BackHandler.exitApp() }
+    ]);
+    return true;
+  };
+
     useEffect(() => {
-    })
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+       return () => backHandler.remove();
+    },[])
     
    return (
      <Provider store={store}>

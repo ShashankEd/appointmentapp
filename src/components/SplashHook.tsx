@@ -1,31 +1,41 @@
 import React, {useEffect, useState } from 'react';
 import {
     View,
-    Text
+    StyleSheet,
+    Text,
+    Dimensions
 } from 'react-native';
-import { useSelector } from "react-redux";
 interface props {
     navigation: {
         navigate: (routeName: string) => void;
     };
-    state: {
-        storeWhetherUserLoggedIn: {
-            flag: boolean
-        }
-    }
 }
 const SplashHook: React.FC<props> = (props) =>{
-    const [navigation, setNavigation] = useState(props.navigation);
+    const {navigation} = props;
     useEffect (() => {
         setTimeout(() => {
             navigation.navigate('HomeHook');
         },2000)
     },[])
     return (
-        <View style={{ flex: 1, padding: 24,backgroundColor:'yellow'}}>
-            <Text>Splash</Text>
+        <View style={styles.mainView}>
+            <Text style={styles.titleText}>Appointment Booking App</Text>
         </View>
     )
 }
+const styles = StyleSheet.create({
+    mainView: {
+        flex: 1, 
+        justifyContent:'center',
+        backgroundColor:'#DDDDDD',
+        alignItems:'center'
+    },
+    titleText: {
+        fontSize: Dimensions.get('screen').scale * 8, 
+        fontWeight:'bold', 
+        fontFamily: 'Verdana',
+    },
+  });
+
 
 export default SplashHook;
