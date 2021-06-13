@@ -6,6 +6,10 @@ import {
     Dimensions,
 } from 'react-native';
 import {useSelector,shallowEqual } from "react-redux";
+import {
+    getDay,
+    getTime
+} from '../utils/Helper';
 const FONT_FAMILY = 'Verdana';
 interface props {
     navigation: {
@@ -20,28 +24,6 @@ const  BookedAppointmentDetails: React.FC<props> = (props) => {
         day,time,username,email,phonenumber
     } = checkWhetherAppointmentBookedResponse?.bookingDetails;
 
-    const getTime = (day:number) => {
-        let i =10;
-        let result = '';
-        while(i <=18) {
-            if(i < 12) {
-                if(day === i) {
-                    result = `${i} AM-${i + 2} PM`;
-                    break;
-                }
-            } else {
-                if(day === i) {
-                    result = `${i > 12 ? i - 12 : i} PM-${(i + 2 - 12)} PM`;
-                    break;
-                }
-            }
-            i = i+2;
-        }
-        return result;
-    }
-    const getDay =(day:number) => {
-        return day === 1 ? 'Today' : ( day === 2 ? 'Tomorrow' : 'Day After Tomorrow')
-    }
     return (
         <View style={styles.mainView}>
           <View style={styles.detailsContainer}>

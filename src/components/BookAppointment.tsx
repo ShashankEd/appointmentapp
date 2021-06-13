@@ -13,6 +13,9 @@ import {
 } from '../store/actions/action';
 import { useDispatch,useSelector,shallowEqual } from "react-redux";
 import { Dispatch } from "redux"
+import {
+    keepBookDisabled
+} from '../utils/Helper';
 const FONT_FAMILY = 'Verdana';
 interface props {
     navigation: {
@@ -60,14 +63,6 @@ const BookAppointment: React.FC<props> = (props) => {
             i = i + 2;
         }
         return output;
-    }
-
-    const keepBookDisabled = () => {
-        let result = false;
-        if(day > 0 && time > 0 && username.length && email.length&& phonenumber.length) {
-            result = true;
-        }
-        return result;
     }
     
     const handleSubmit = () => {
@@ -145,8 +140,8 @@ const BookAppointment: React.FC<props> = (props) => {
                     />
                 </View>}
                 <TouchableHighlight 
-                    style={keepBookDisabled() ?  styles.book : styles.bookDisabled}
-                    disabled={keepBookDisabled() ? false : true} 
+                    style={keepBookDisabled(day,time,username,email,phonenumber) ?  styles.book : styles.bookDisabled}
+                    disabled={keepBookDisabled(day,time,username,email,phonenumber) ? false : true} 
                     onPress={() => handleSubmit()}>
                         <Text style={styles.titleText}>{`${checkWhetherAppointmentBookedResponse?.flag ? 'Update' : 'Book'}`}</Text>
                 </TouchableHighlight>
