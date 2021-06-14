@@ -10,7 +10,7 @@ interface props {
         navigate: (routeName: string) => void;
     };
 }
-const SplashHook: React.FC<props> = (props) =>{
+const SplashHook: React.FC<props> = (props?) =>{
     const {navigation} = props;
     useEffect (() => {
         setTimeout(() => {
